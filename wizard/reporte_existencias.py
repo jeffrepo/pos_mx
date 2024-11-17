@@ -23,7 +23,6 @@ class PosmxReporteExistenciasWizard(models.TransientModel):
     tienda_id = fields.Many2one('pos.config', 'Tienda/Sucursal', default=_tienda_actual, required=True)
 
     def print_report(self):
-        logging.warning('print report existencias')
         data = {
              'ids': [],
              'model': 'pos_mx.reporte_existencias.wizard',

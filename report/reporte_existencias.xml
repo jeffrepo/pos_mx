@@ -51,7 +51,7 @@
 
                                     </td>
                                     <td style="text-aligh;center;font-size: 13px;">
-                                        <t t-if="linea.lot_id">
+                                        <t t-if="linea.lot_id and linea.lot_id.expiration_date">
                                             <span t-esc="linea.lot_id.expiration_date.strftime('%d/%m/%Y')" />
                                         </t>
                                     </td>
