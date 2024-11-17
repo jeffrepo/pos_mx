@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_pos_mx_existencias_wizard" model="ir.ui.view">
+              <field name="name">view.pos_mx.existencias.wizard.</field>
+              <field name="model">pos_mx.reporte_existencias.wizard</field>
+              <field name="arch" type="xml">
+                <form string="Reporte de existencias">
+                  <group>
+                    <field name="tienda_id"/>
+                  </group>
+                    <footer>
+                        <button name="print_report" string="Generar reporte" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+              </field>
+        </record>
+
+
+        <act_window id="pos_mx_action_reporte_existencias"
+            name="Reporte de existencias"
+            binding_model="pos.session"
+            res_model="pos_mx.reporte_existencias.wizard"
+            view_mode="form" target="new"/>
+
+        <menuitem id="menu_pos_mx_reporte_tiendas" name="Reportes de tienda" parent="point_of_sale.menu_point_root" sequence="75"/>
+        <menuitem action="pos_mx_action_reporte_existencias" id="menu_existencias" parent="pos_mx.menu_pos_mx_reporte_tiendas"/>
+
+
+    </data>
+</odoo>

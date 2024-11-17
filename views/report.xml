@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_reporte_existencias" model="ir.actions.report">
+            <field name="name">Reporte de existencias</field>
+            <field name="model">pos.session</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">pos_mx.reporte_existencias</field>
+            <field name="report_file">pos_mx.reporte_existencias</field>
+            <field name="print_report_name">'Reporte existencias'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="pos_mx.paperformat_ticket_stock"/>
+        </record>
+    </data>
+</odoo>
