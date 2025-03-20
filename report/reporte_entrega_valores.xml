@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="reporte_entrega_valores">
+        <t t-call="web.html_container">
+            <div class="article">
+
+                <div class="page">
+                    <center><strong>Entrega de valores</strong></center>
+                    <br/>
+                    <table style="margin: 0 auto;width:100%;">
+                        <tr>
+                            <td>Sucursal:</td>
+                            <td><span t-esc="tienda_id[1]"/></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha/Hora: </td>
+                            <td><span t-esc="fecha_generacion"/></td>
+                            <!-- <td><t t-esc="time.strftime('%Y/%m/%d %H:%M:%S %a',time.strptime(fecha_generacion,'%Y/%m/%d %H:%M:%S %a'))" /></td> -->
+
+                        </tr>
+                    </table>
+                    <br/>
+                    <strong>Detalle de retiros efectivo</strong>
+                    <t t-set="total" t-value="0"/>
+                    <table style="margin: 0 auto;width:105%;">
+                        <thead>
+                            <tr>
+                                <th class="text-left" style="border-top: 1px solid black">No</th>
+                                <th class="text-center" style="border-top: 1px solid black">Cajero(a)</th>
+                                <th class="text-center" style="border-top: 1px solid black">Folio</th>
+                                <th class="text-right" style="border-top: 1px solid black">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="_get_entrega_valores(fecha_inicio,fecha_fin, tienda_id)['retiro_efectivo']" t-as="entrega">
+                                <tr>
+                                    <td colspan="4"><span t-esc="entrega['fecha']" t-options='{"widget": "date"}'/></td>
+                                </tr>
+                                <t t-set="contador" t-value="1"/>
+                                <t t-foreach="entrega['retiros']" t-as="r">
+                                    <tr>
+                                        <td class="text-left"><span t-esc="contador"/></td>
+                                        <td class="text-center"><span t-esc="r.usuario_id.name"/></td>
+                                        <td class="text-center"><span t-esc="r.name"/></td>
+                                        <td class="text-right"><span t-esc="r.total" t-options="{'widget': 'monetary', 'display_currency': user.company_id.currency_id}"/></td>
+                                    </tr>
+                                    <t t-set="contador" t-value="contador+1"/>
+                                </t>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right"><strong><span t-esc="entrega['total_retiros']" t-options="{'widget': 'monetary', 'display_currency': user.company_id.currency_id}"/></strong></td>
+                                    <t t-set="total" t-value="total+entrega['total_retiros']"/>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td></td>
+                                <td style="border-top: 1px solid #111;">Total</td>
+                                <td style="border-top: 1px solid #111;"></td>
+                                <td style="border-top: 1px solid #111;"><span t-esc="total" t-options="{'widget': 'monetary', 'display_currency': user.company_id.currency_id}"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="margin: 0 auto;width:100%;">
+                        <tr>
+                            <td style="border-top: 1px solid #111;text-align:center">Nombre y firma de cajero(a)</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="margin: 0 auto;width:100%;">
+                        <tr>
+                            <td style="border-top: 1px solid #111;text-align:center">Nombre y firma del custodio</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </t>
+    </template>
+</odoo>

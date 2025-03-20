@@ -19,6 +19,7 @@
     'data': [
         'data/paperformat_ticket_stock.xml',
         'report/reporte_existencias.xml',
+        'report/reporte_entrega_valores.xml',
         'views/report.xml',
         'wizard/reporte_existencias_wizard.xml',
     ],
