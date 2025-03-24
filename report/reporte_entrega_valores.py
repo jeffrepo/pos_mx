@@ -13,15 +13,15 @@ from operator import itemgetter
 import pytz
 
 class ReportEntregaValores(models.AbstractModel):
-    _name = 'report.quemen.reporte_entrega_valores'
+    _name = 'report.pos_mx.reporte_entrega_valores'
 
 
     def _get_entrega_valores(self, fecha_inicio,fecha_fin, tienda_id):
         retiro_ids = False
         if fecha_inicio and fecha_fin:
-            retiro_ids = self.env['quemen.retiros_efectivo'].search([('tienda_id','=',tienda_id[0]),('fecha_hora','>=',fecha_inicio),('fecha_hora','<=',fecha_fin)],order='fecha_hora asc')
+            retiro_ids = self.env['pos_cash_limit.retiros_efectivo'].search([('tienda_id','=',tienda_id[0]),('fecha_hora','>=',fecha_inicio),('fecha_hora','<=',fecha_fin)],order='fecha_hora asc')
         else:
-            retiro_ids = self.env['quemen.retiros_efectivo'].search([('tienda_id','=',tienda_id[0]),('entregado','=', False),('state','=', 'confirmado')], order='fecha_hora asc')
+            retiro_ids = self.env['pos_cash_limit.retiros_efectivo'].search([('tienda_id','=',tienda_id[0]),('entregado','=', False),('state','=', 'confirmado')], order='fecha_hora asc')
         fondo_caja = {}
         retiro_efectivo = {}
         if len(retiro_ids) > 0:
