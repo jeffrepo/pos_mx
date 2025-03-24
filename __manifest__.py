@@ -21,6 +21,7 @@
         'report/reporte_existencias.xml',
         'report/reporte_entrega_valores.xml',
         'wizard/reporte_entrega_valores_wizard.xml',
+        'views/res_users_views.xml',
         'views/report.xml',
         'wizard/reporte_existencias_wizard.xml',
     ],
