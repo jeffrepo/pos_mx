@@ -22,6 +22,7 @@
         'report/reporte_entrega_valores.xml',
         'wizard/reporte_entrega_valores_wizard.xml',
         'views/res_users_views.xml',
+        'report/reporte_corte_caja_carta.xml',
         'views/report.xml',
         'wizard/reporte_existencias_wizard.xml',
     ],

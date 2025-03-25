@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="reporte_corte_caja_carta_document">
+
+    <t t-call="web.html_container">
+
+
+      <div class ="page">
+        <!-- <H1 align="center"><strong>MAQUILADORA PASTELERA S.A. DE C.V.</strong></H1> -->
+        <H2 align="center">REPORTE DE CORTE DE CAJA</H2>
+        <br></br>
+        <t t-set="retorno_productos_sesiones" t-value="sesiones(docs)"/>
+        <t t-set="listado_totales" t-value="retorno_productos_sesiones['listado_totales']"/>
+        <!-- <t t-set="listado_productos" t-value="retorno_productos_sesiones['listado_productos']"/> -->
+        <!-- DESARROLLO por JEFFREPO -->
+          <!-- folios_concatenados -->
+        <t t-set="folios_concatenados" t-value="retorno_productos_sesiones['folios_concatenados']"/>
+        <t t-set="ventas_mostrador" t-value="retorno_productos_sesiones['ventas_mostrador']"/>
+        <t t-set="total_ventas_mostrador" t-value="retorno_productos_sesiones['total_ventas_mostrador']"/>
+        <t t-set="ventas_sesion" t-value="retorno_productos_sesiones['ventas_sesion']"/>
+        <t t-set="totales_ventas_sesion" t-value="retorno_productos_sesiones['totales_ventas_sesion']"/>
+        <t t-set="resumen_facturas_expedidas" t-value="retorno_productos_sesiones['resumen_facturas_expedidas']"/>
+        <t t-set="resumen_factura_global" t-value="retorno_productos_sesiones['resumen_factura_global']"/>
+        <t t-set="total_facturas_expedidas" t-value="retorno_productos_sesiones['total_facturas_expedidas']"/>
+        <t t-set="detalle_facturas_expedidas" t-value="retorno_productos_sesiones['detalle_facturas_expedidas']"/>
+        <t t-set="total_detalle_facturas_expedidas" t-value="retorno_productos_sesiones['total_detalle_facturas_expedidas']"/>
+        <t t-set="diferencia" t-value="retorno_productos_sesiones['diferencia']"/>
+        <t t-set="retiros_corte_previa" t-value="retorno_productos_sesiones['retiros_corte_previa']"/>
+
+        <t t-set="listado_notas_credito" t-value="retorno_productos_sesiones['listado_notas_credito']"/>
+        <t t-set="listado_facturas_globales" t-value="retorno_productos_sesiones['listado_facturas_globales']"/>
+        <t t-set="listado_facturas_expedidas" t-value="retorno_productos_sesiones['listado_facturas_expedidas']"/>
+        <t t-set="metodos_pago" t-value="retorno_productos_sesiones['metodos_pago']"/>
+        <t t-set="listado_retiros" t-value="retorno_productos_sesiones['listado_retiros']"/>
+        <t t-set="listado_cancelados" t-value="retorno_productos_sesiones['listado_cancelados']"/>
+        <t t-foreach="docs" t-as="o">
+
+          <table style="width:100%;">
+            <tbody>
+              <tr >
+                <th align="left">Sucursal:</th>
+                <td colspan="3"><span t-field="o.config_id"/></td>
+              </tr>
+              <tr>
+                <th align="left">Cajero:</th>
+                <td colspan="3"><span t-field="o.user_id"/></td>
+              </tr>
+
+              <tr >
+                <th align="left">Fecha:</th>
+                <td colspan="3"><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/></td>
+              </tr>
+
+
+            </tbody>
+          </table>
+
+          <table style="width:100%">
+
+            <tbody>
+
+              <tr height="35">
+                <th colspan="4" align="left">Desglose de total de Venta</th>
+              </tr>
+
+              <tr height="15">
+                <th style="background-color:silver;color:black; font-size:100%">Concepto</th>
+                <th style="background-color:silver;color:black; font-size:100%">Folios</th>
+                <th style="background-color:silver;color:black; text-align:right; font-size:100%">Importe</th>
+                <th style="background-color:silver;color:black; text-align:right; font-size:100%">Descuento</th>
+                <th style="background-color:silver;color:black; text-align:right; font-size:100%">Total</th>
+              </tr>
+
+              <tr height="10" >
+                <th colspan="3"></th>
+              </tr>
+
+              <tr height="15">
+                <td style="font-size:100%" align="left">Ventas de mostrador (contado)</td>
+                <td style="font-size:100%"  ><span t-esc="folios_concatenados"/></td>
+                <td style="font-size:100%" align="right"><span t-esc="ventas_mostrador['importe']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td style="font-size:100%" align="right"><span t-esc="ventas_mostrador['descuento']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td style="font-size:100%" align="right"><span t-esc="ventas_mostrador['total']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              </tr>
+
+              <tr height="15">
+                <td style="font-size:100%" align="left">Notas de crédito</td>
+                <td ></td>
+                <td style="font-size:100%" t-foreach="listado_totales" t-as="ti" align="right"><span t-esc="ti['total_importe_credito']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td style="font-size:100%" t-foreach="listado_totales" t-as="ti" align="right"><span t-esc="ti['total_descuento_credito']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td style="font-size:100%" t-foreach="listado_totales" t-as="ti" align="right"><span t-esc="ti['total_nota_credito']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              </tr>
+
+              <tr height="25">
+                <th ></th>
+                <td ></td>
+                <td colspan="2" style="font-size:100%" align="right">Total de caja</td>
+                <th t-foreach="listado_totales" t-as="ti" style="text-align:right; font-size:100%"><span t-esc="total_ventas_mostrador" t-options = '{"widget": "float", "precision": 2}'/></th>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- <table style ="width:100%">
+
+            <tr height="35">
+              <th colspan="3" align="left">Cuentas por cobrar</th>
+            </tr>
+
+            <tr height="15">
+              <th style="background-color:silver;color:black; font-size:100%">Concepto</th>
+              <th style="background-color:silver;color:black; font-size:100%">Folios</th>
+              <th style="background-color:silver;color:black; text-align: right; font-size:100%" >Importe</th>
+              <th style="background-color:silver;color:black; text-align: right; font-size:100%" >Descuento</th>
+              <th style="background-color:silver;color:black; text-align: right; font-size:100%" >Total</th>
+            </tr>
+
+            <tr height="70" >
+              <th colspan="3"></th>
+            </tr>
+
+            <tr height="25" >
+              <th colspan="2"></th>
+              <td align="right" colspan="2" style="font-size:100%">Total de por cobrar</td>
+              <td ></td>
+              <td ></td>
+            </tr>
+
+
+          </table> -->
+
+          <table style="width:100%">
+
+            <tr height="45">
+              <th colspan="10" align="left">Detalles de total de ventas</th>
+            </tr>
+
+            <tr height="35" >
+              <th colspan="10" align="left"> Relación de ventas de Mostrador por Ticket</th>
+            </tr>
+
+            <tr height="15">
+              <th style="background-color:silver;color:black;font-size:100%;">Venta</th>
+              <!-- <th style="background-color:silver;color:black;font-size:100%; text-align:center">Folio</th> -->
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Ventas al 0%</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Descuento 0%</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Ventas al 16%</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Descuento al 16%</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Descuento</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">IVA</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">Total</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:center">FP</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:right">E</th>
+            </tr>
+
+            <tr height="25" t-foreach="ventas_sesion" t-as="p">
+              <td style="font-size:100%"><span t-esc="ventas_sesion[p]['venta']"/></td>
+              <!-- <td style="font-size:100%"><span t-esc="ventas_sesion[p]['folio']"/></td> -->
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['ventas_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['descuento_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['ventas_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['descuento_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['descuento']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="right"><span t-esc="ventas_sesion[p]['total']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td style="font-size:100%" align="center"><span t-esc="ventas_sesion[p]['fp']"/></td>
+              <td ></td>
+            </tr>
+
+            <tr height="7">
+              <th colspan="3"></th>
+            </tr>
+
+            <tr height="45">
+              <td style="font-size:100%" colspan="1">Totales</td>
+
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['ventas_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['descuento_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['ventas_iva']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['descuento_iva']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['descuento']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['iva']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th style="font-size:100%; text-align:right"><span t-esc="totales_ventas_sesion['total']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th ></th>
+              <th ></th>
+            </tr>
+
+          </table>
+
+
+          <table style="width:100%">
+
+            <tr height="35">
+              <th colspan="7" align="left">Relación de ventas de pedido especial</th>
+            </tr>
+
+            <tr height="15">
+              <th style="background-color:silver;color:black;font-size:100%;">Venta</th>
+              <!-- <th style="background-color:silver;color:black;font-size:100%;">Folio</th> -->
+              <th style="background-color:silver;color:black;font-size:100%;">Importe</th>
+              <th style="background-color:silver;color:black;font-size:100%;">Descuento</th>
+              <th style="background-color:silver;color:black;font-size:100%;">Subtotal</th>
+              <th style="background-color:silver;color:black;font-size:100%;">Pago pendiente</th>
+              <th style="background-color:silver;color:black;font-size:100%;">Anticipo</th>
+            </tr>
+
+            <tr height="70">
+              <th></th>
+            </tr>
+
+          </table>
+
+          <table style="width:100%">
+
+            <tr height="35">
+              <th colspan="5" align="left">Notas de crédito</th>
+            </tr>
+
+            <tr height="15">
+              <th colspan="3" style="background-color:silver;color:black;font-size:100%;">Venta</th>
+              <!-- <th colspan="3" style="background-color:silver;color:black;font-size:100%;">Folio</th> -->
+              <th colspan="5" style="background-color:silver;color:black;font-size:100%; text-align:center">Total</th>
+            </tr>
+
+            <tr height="15" t-foreach="listado_notas_credito" t-as="ln">
+              <td colspan="3" style="font-size:100%"><span t-esc="ln['venta']"/></td>
+              <!-- <td colspan="3" style="font-size:100%"><span t-esc="ln['folio_credito']"/></td> -->
+              <td colspan="5" style="font-size:100%" align="right"><span t-esc="ln['total']"/></td>
+            </tr>
+
+            <tr height="70">
+              <th colspan="3"></th>
+            </tr>
+
+          </table>
+
+          <table style="width:100%;">
+            <tbody>
+
+              <tr>
+                <th colspan="4" align="left">Total de facturas</th>
+              </tr>
+
+              <tr style="height:15%">
+                <th style="background-color:silver;color:black;font-size:100%;">Concepto</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align: right">Venta</th>
+                <!-- <th style="background-color:silver;color:black;font-size:100%; text-align: right">Folios</th> -->
+                <th style="background-color:silver;color:black;font-size:100%; text-align:right">Ventas al 0% </th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:right">Ventas con IVA </th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:right">IVA </th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:right">Total </th>
+              </tr>
+
+              <tr height="15">
+                <td style="font-size:100%" align="left">Detalle de facturas expedidas</td>
+                <td ></td>
+                <!-- <td ></td> -->
+                <td align="right" style="font-size:100%"><span t-esc="resumen_facturas_expedidas['venta_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_facturas_expedidas['venta_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_facturas_expedidas['iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_facturas_expedidas['total']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              </tr>
+
+              <tr height="35">
+                <td style="font-size:100%;">Facturas global del dia <![CDATA[&nbsp;]]> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/></td>
+                <td ></td>
+                <!-- <td ></td> -->
+                <td align="right" style="font-size:100%"><span t-esc="resumen_factura_global['venta_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_factura_global['venta_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_factura_global['iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+                <td align="right" style="font-size:100%"><span t-esc="resumen_factura_global['total']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              </tr>
+
+              <tr height="35">
+                <td ></td>
+                <!-- <td ></td> -->
+                <td ></td>
+                <td ></td>
+                <td ></td>
+                <td style="font-size:100%">Total</td>
+                <th style="text-align:right; font-size:100%"><span t-esc="total_facturas_expedidas" t-options = '{"widget": "float", "precision": 2}'/></th>
+              </tr>
+
+            </tbody>
+
+
+          </table>
+
+
+          <table style="width:100%;">
+
+            <tr height="35">
+              <th colspan="6" align="left">Detalle de facturas expedidas</th>
+            </tr>
+
+            <tr height="15">
+              <!-- <th colspan="2" style="background-color:silver;color:black;font-size:100%">Serie</th> -->
+              <th style="background-color:silver;color:black;font-size:100%">Venta</th>
+              <th style="background-color:silver;color:black;font-size:100% text-align:right">Ventas al 0%</th>
+              <th style="background-color:silver;color:black;font-size:100% text-align:right">Ventas con IVA</th>
+              <th style="background-color:silver;color:black;font-size:100% text-align:right">IVA</th>
+              <th style="background-color:silver;color:black;font-size:100% text-align:right">Total</th>
+              <th style="background-color:silver;color:black;font-size:100% text-align:right">Estado</th>
+            </tr>
+
+            <tr height="35" t-foreach="detalle_facturas_expedidas" t-as="f">
+              <!-- <td colspan="2" style="font-size:100%"><span t-esc="detalle_facturas_expedidas[f]['serie']"/></td> -->
+              <td style="font-size:100%"><span t-esc="detalle_facturas_expedidas[f]['venta']"/></td>
+              <td align="right" style="font-size:100%"><span t-esc="detalle_facturas_expedidas[f]['ventas_sin_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td align="right" style="font-size:100%"><span t-esc="detalle_facturas_expedidas[f]['ventas_iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td align="right" style="font-size:100%"><span t-esc="detalle_facturas_expedidas[f]['iva']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td align="right" style="font-size:100%"><spant t-esc="detalle_facturas_expedidas[f]['total']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td ></td>
+            </tr>
+
+            <tr height="35">
+              <!-- <td colspan="2"></td> -->
+              <td ></td>
+              <td ></td>
+              <td ></td>
+              <td align="right" style="font-size:100%">Total</td>
+              <th style="text-align:right; font-size:100%"><span t-esc="total_detalle_facturas_expedidas"/></th>
+              <td ></td>
+            </tr>
+
+          </table>
+
+          <table style="width:100%;">
+
+            <tr height="35">
+              <th colspan="5" align="left">Movimiento de caja</th>
+            </tr>
+
+
+            <tr height="15">
+              <th colspan="2" style="background-color:silver;color:black;font-size:100%;">Concepto</th>
+              <th colspan="1" style="background-color:silver;color:black;font-size:100%; text-align:center">Cantidad</th>
+              <th colspan="1" style="background-color:silver;color:black;font-size:100%; text-align:center">Total</th>
+            </tr>
+
+            <tr height="15" t-foreach="metodos_pago" t-as="mp">
+              <td colspan="2" style="font-size:100%"><span t-esc="metodos_pago[mp]['tipo']"/></td>
+              <td colspan="1" align="center" style="font-size:100%"><span t-esc="metodos_pago[mp]['conteo']"/></td>
+              <td colspan="1" align="right" style="font-size:100%"><span t-esc="metodos_pago[mp]['importe']" t-options = '{"widget": "float", "precision": 2}'/></td>
+            </tr>
+
+            <tr height="25">
+              <td ></td>
+              <th colspan="2" style="text-align: center; font-size:100%">Total</th>
+              <th t-foreach="listado_totales" t-as="lt" style="text-align:right; font-size:100%"><span t-esc="lt['total_pago']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <th ></th>
+              <th colspan="2" style="font-size:100%">Diferencia:</th>
+              <th style="text-align: center; font-size:100%"> <span t-esc="diferencia" t-options = '{"widget": "float", "precision": 2}'/> </th>
+            </tr>
+
+            <tr height="35">
+              <td colspan="2" ></td>
+              <th ></th>
+              <th ></th>
+              <th colspan="3" align="right" style="font-size:100%; text-align:right">(Retiros-Efectivo)</th>
+              <th ></th>
+            </tr>
+
+            <tr height="35">
+              <th colspan="6" align="left">Detalles de retiro de efectivo</th>
+            </tr>
+
+            <tr style="height:15%">
+              <th colspan="2" style="background-color:silver;color:black;font-size:100%;">N° de retiro </th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:center">Destintivo</th>
+              <th colspan="2" style="background-color:silver;color:black;font-size:100%; text-align:center">Fecha y Hora</th>
+              <th style="background-color:silver;color:black;font-size:100%; text-align:center">Cantidad</th>
+            </tr>
+
+            <tr height="20" t-foreach="listado_retiros" t-as="lr">
+              <td colspan="2" style="font-size:100%"><span t-esc="lr['n_retiro']"/></td>
+              <td colspan="1" style="font-size:100%" align="center"><span t-esc="lr['distintivo']"/></td>
+              <td colspan="2" style="font-size:100%" align="center"><span t-esc="lr['fecha_hora']"/></td>
+              <td colspan="1" style="font-size:100%" align="right"><span t-esc="lr['cantidad']" t-options = '{"widget": "float", "precision": 2}'/></td>
+            </tr>
+
+            <tr height="10">
+              <td colspan="2" ></td>
+            </tr>
+
+            <tr height="35">
+              <td colspan="2" ></td>
+              <th colspan="3" style="text-align:center; font-size:100%">Total sin retiro inicial:</th>
+              <th colspan="1" style="text-align:right; font-size:100%" t-foreach="listado_totales" t-as="lt"><span t-esc="lt['total_retiros']" t-options = '{"widget": "float", "precision": 2}'/></th>
+
+            </tr>
+
+            <tr height="35">
+              <th colspan="6" align="left">Relación de Tickets Cancelados</th>
+            </tr>
+
+            <tr height="15">
+              <th colspan="2" style="background-color:silver;color:black;font-size:100%;">Venta</th>
+              <!-- <th colspan="1" style="background-color:silver;color:black;font-size:100%; text-align:center">Folio</th> -->
+              <th colspan="1" style="background-color:silver;color:black;font-size:100%; text-align:center">Importe</th>
+              <th colspan="1" style="background-color:silver;color:black;font-size:100%; text-align:center">Autorizado</th>
+            </tr>
+
+            <tr height="15" t-foreach="listado_cancelados" t-as="lc">
+              <td colspan="2" style="font-size:100%"><span t-esc="lc['venta']"/></td>
+              <!-- <td colspan="1" align="right" style="font-size:100%"><span t-esc="lc['folio1']"/></td> -->
+              <td colspan="1" align="right" style="font-size:100%"><span t-esc="lc['importe']" t-options = '{"widget": "float", "precision": 2}'/></td>
+              <td colspan="1" ></td>
+            </tr>
+
+            <tr height="15" t-foreach="listado_totales" t-as="lt">
+              <td colspan="1" ></td>
+              <td colspan="1" align="center" style="font-size:100%">Total</td>
+              <th colspan="1" style="text-align:right; font-size:100%"><span t-esc="lt['total_cancelado']" t-options = '{"widget": "float", "precision": 2}'/></th>
+              <td colspan="1" ></td>
+            </tr>
+
+            <tr height="25">
+              <th colspan="4"></th>
+            </tr>
+
+          </table>
+
+          <table style="width:100%">
+
+            <tr height="35">
+              <th colspan="4" align="left">Retiros corte previo</th>
+            </tr>
+
+            <tbody>
+
+              <tr height="9">
+                <th style="background-color:silver;color:black;font-size:100%;">No. previsualización</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:center">Cantidad billetes</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:center">Cantidad morralla</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:right">Diferencia</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:center">Fecha y hora</th>
+                <th style="background-color:silver;color:black;font-size:100%; text-align:center">Usuario</th>
+              </tr>
+
+                <tr height="35" t-foreach="retiros_corte_previa" t-as="lr">
+                  <td colspan="1" style="font-size:100%"><span t-esc="lr['n_retiro']"/></td>
+                  <td></td>
+                  <td></td>
+                  <td colspan="1" style="font-size:100%" align="right"><span t-esc="lr['cantidad']"/></td>
+                  <td colspan="2" style="font-size:100%" align="center"><span t-esc="lr['fecha_hora']"/></td>
+                  <td colspan="1" style="font-size:100%" align="right"><span t-esc="lr['cajero']"/></td>
+                </tr>
+
+
+              <tr height="15" >
+                <td ></td>
+                <th colspan="3" align="center" style="color:black; height:0.30cms"><hr size="2px" color="black"></hr></th>
+
+              </tr>
+
+              <tr height="15">
+                <td></td>
+                <td colspan="3" align="center"><span t-field="o.user_id"/></td>
+
+              </tr>
+
+            </tbody>
+
+
+          </table>
+
+        </t>
+      </div>
+
+    </t>
+  </template>
+    <template id="reporte_corte_caja_carta">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="quemen.reporte_corte_caja_carta_document" t-lang="o.user_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
