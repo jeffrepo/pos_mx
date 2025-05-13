@@ -32,7 +32,7 @@
             <field name="report_name">pos_mx.reporte_corte_caja_carta</field>
             <field name="report_file">pos_mx.reporte_corte_caja_carta</field>
             <field name="print_report_name">'Corte de caja carta'</field>
-            <field name="binding_model_id" ref="model_pos_session"/>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_session"/>
             <field name="binding_type">report</field>
         </record>
 
